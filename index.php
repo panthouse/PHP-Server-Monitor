@@ -5,15 +5,15 @@
 <?php
 $system = ini_get('system');
 $win  = is_bool($system);
-$count = 1;
+$count = 1;   //$count, not $counter!
 
 // -------------------------
 // Type in the name of the servers inside the quotation marks. 
 // Add or remove as many as you want but make sure they have an added "services" entry.
 // -------------------------
-$host[1] = "Server1";
-$host[2] = "Server2";
-$host[3] = "Server3";
+$host[1] = "8.8.8.8";
+$host[2] = "www.google.com";
+$host[3] = "8.8.4.4.";
 $host[4] = "Server4";
 $host[5] = "Server5";
 $host[6] = "Server6";
@@ -24,9 +24,9 @@ $host[10] = "Server10";
 // -------------------------
 // Type in the function of each server inside the quotation marks.
 // -------------------------
-$services[1] = "User Documents, T: Drive";
-$services[2] = "Active Directory";
-$services[3] = "Backup Active Directory";
+$services[1] = "Google DNS";
+$services[2] = "Google.com";
+$services[3] = "2nd Google DNS";
 $services[4] = "Email, Webmail";
 $services[5] = "Sims, Payroll, G: Drive";
 $services[6] = "Sharepoint VLE 2003";
@@ -39,16 +39,16 @@ $services[10] = "User Settings";
 echo "<table border=\"0\" align=\"center\">";
 foreach ($host as $value) 
 {
-	 $counter = $count + 1;
+	 //   not here and not mix up counter and count  // $counter = $count + 1;
 	  echo "<tr><td width=120>$value</td>"; 
       echo '<body bgcolor="#FFFFFF" text="#000000"></body>';       
       //check target IP or domain
-	  $pingreply = exec("ping -n $count $value");
+	  $pingreply = exec("ping -n -c1 $value");   // added -c1 = 1 ping, removed $count here
 	  if ( substr($pingreply, -2) == 'ms')
   		{
 			#echo "<td width=60><strong><font color='#006600'>UP</font></strong></td>";
 			echo "<td width=60><img src='up.png'></td>";
-			echo "<td width=230>". $services[$counter] . "</td>";
+			echo "<td width=230>". $services[$count] . "</td>";    //$count, not $counter
 		    echo "<td>Reply Speed ";
 		    echo substr($pingreply, -13);
 		}
@@ -56,10 +56,11 @@ foreach ($host as $value)
 		{
 			#echo "<td width=60><strong><font color='#990000'>DOWN</font></strong></td>";
 			echo "<td width=60><img src='down.jpg'></td>";
-			echo "<td width=230>". $services[$counter] . "</td>";
+			echo "<td width=230>". $services[$count] . "</td>";    //$count, not $counter
 		    echo "<td>";
 			echo "Timeout...";
 		}
+		$count = $count+1;     // here in stead of on top
 }
 echo "</td></tr></table>";
 ?>
